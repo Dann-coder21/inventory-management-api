@@ -35,12 +35,24 @@ class ProductService
 
     {
 
-        return product::create($data);
+        return Product::create($data);
     }
 
     public function show(Product $product)
     {
 
         return $product->load('category');
+    }
+
+    public function update(Product $product,  array $data)
+    {
+
+        $product->update($data);
+        return $product->load('category');
+    }
+
+    public function destroy(Product $product) : void
+    {
+        $product->delete('*');
     }
 }

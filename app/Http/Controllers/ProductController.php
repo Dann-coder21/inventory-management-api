@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\ProductService;
 use App\Http\Resources\ProductResource;
 use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 
 class ProductController extends Controller
 {
@@ -65,16 +66,24 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, product $product)
+    public function update(UpdateProductRequest $request, product $product)
     {
-        //
+        $product = $this->productService->update($product, $request->validated());
+        return new productResource($product);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(product $product)
+    public function destroy(Product $product)
     {
-        //
+
+        $this->productService->destroy($product);
+
+        return response()->json([
+
+            'message' => 'Product deleted successfully.'
+
+        ]);
     }
 }
