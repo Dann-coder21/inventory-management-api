@@ -4,32 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\product;
 use Illuminate\Http\Request;
+use App\Services\ProductService;
+use App\Http\Resources\ProductResource;
+use App\Http\Requests\StoreProductRequest;
 
 class ProductController extends Controller
 {
+    //Dependency injection of the ProductService class into the ProductController class. 
+
+
+    public function __construct(
+        private ProductService $productService
+    ) {}
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $products = Product::query()
+        $products = $this->productService->index($request);
 
-            // Load the related category
-            ->with('category')
-
-            // Filter by category if provided
-            ->when($request->filled('category'), function ($query) use ($request) {
-                $query->where('category_id', $request->category);
-            })
-
-            // Search by product name if provided
-            ->when($request->filled('search'), function ($query) use ($request) {
-                $query->where('name', 'LIKE', "%{$request->search}%");
-            })
-            ->latest()
-            ->paginate(10);
-
-        return response()->json($products);
+        return ProductResource::collection($products);
     }
 
     /**
@@ -43,9 +37,11 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        //
+
+        $product = $this->productService->store($request->validated());
+        return new productResource($product);
     }
 
     /**
