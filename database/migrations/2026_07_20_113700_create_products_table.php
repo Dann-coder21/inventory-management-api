@@ -19,9 +19,8 @@ return new class extends Migration
             $table->integer('quantity');
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table-> boolean('is_active')->default(true);
-            $table->timestamps('created_at') -> nullable();
-            $table-> timestamps('updated_at')->nullable();
-            $table-> timestamps('deleted_at')->nullable();
+            $table->timestamps();
+            
 
         });
     }

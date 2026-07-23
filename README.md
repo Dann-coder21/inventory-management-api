@@ -1,58 +1,398 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Inventory Management API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A production-style RESTful Inventory Management API built with Laravel and PostgreSQL.
 
-## About Laravel
+The API allows businesses to manage products, categories and inventory while following Clean Architecture principles.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+# Technologies
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Laravel
+- PHP
+- PostgreSQL
+- Eloquent ORM
+- REST API
+- Postman
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+# Project Architecture
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Request
+↓
+Route
+↓
+Controller
+↓
+Service
+↓
+Model
+↓
+Database
+↓
+API Resource
+↓
+JSON Response
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+---
 
-## Agentic Development
+# Folder Structure
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+app/
+
+├── Http/
+
+│ ├── Controllers/
+
+│ ├── Requests/
+
+│ └── Resources/
+
+│
+
+├── Models/
+
+│
+
+└── Services/
+
+database/
+
+├── migrations/
+
+└── seeders/
+
+---
+
+# Creating the Project
+
+Create Laravel project
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+composer create-project laravel/laravel inventory-management-api
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Move into project
 
-## Contributing
+```bash
+cd inventory-management-api
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Start server
 
-## Code of Conduct
+```bash
+php artisan serve
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+# Database
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Create PostgreSQL database
 
-## License
+```text
+inventory_api
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Update the .env file
+
+```env
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=inventory_api
+DB_USERNAME=postgres
+DB_PASSWORD=your_password
+```
+
+Run migrations
+
+```bash
+php artisan migrate
+```
+
+Reset database
+
+```bash
+php artisan migrate:fresh
+```
+
+---
+
+# Generate Files
+
+## Product
+
+Create Model + Migration
+
+```bash
+php artisan make:model Product -m
+```
+
+Create Controller
+
+```bash
+php artisan make:controller ProductController --api
+```
+
+Create Form Requests
+
+```bash
+php artisan make:request StoreProductRequest
+```
+
+```bash
+php artisan make:request UpdateProductRequest
+```
+
+Create API Resource
+
+```bash
+php artisan make:resource ProductResource
+```
+
+Create Service
+
+Laravel has no built-in command.
+
+Create manually:
+
+```text
+app/Services/ProductService.php
+```
+
+---
+
+## Category
+
+Create Model + Migration
+
+```bash
+php artisan make:model Category -m
+```
+
+Create Controller
+
+```bash
+php artisan make:controller CategoryController --api
+```
+
+Create Requests
+
+```bash
+php artisan make:request StoreCategoryRequest
+```
+
+```bash
+php artisan make:request UpdateCategoryRequest
+```
+
+Create API Resource
+
+```bash
+php artisan make:resource CategoryResource
+```
+
+Create Service
+
+```text
+app/Services/CategoryService.php
+```
+
+---
+
+# Migrations
+
+Run migrations
+
+```bash
+php artisan migrate
+```
+
+Rollback
+
+```bash
+php artisan migrate:rollback
+```
+
+Reset database
+
+```bash
+php artisan migrate:fresh
+```
+
+Reset and Seed
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+---
+
+# Useful Artisan Commands
+
+List routes
+
+```bash
+php artisan route:list
+```
+
+Open Tinker
+
+```bash
+php artisan tinker
+```
+
+Clear cache
+
+```bash
+php artisan optimize:clear
+```
+
+Generate application key
+
+```bash
+php artisan key:generate
+```
+
+---
+
+# Product API Endpoints
+
+| Method | Endpoint | Description |
+|----------|-------------------------|----------------|
+| GET | /api/products | List Products |
+| GET | /api/products/{id} | Show Product |
+| POST | /api/products | Create Product |
+| PUT | /api/products/{id} | Update Product |
+| DELETE | /api/products/{id} | Delete Product |
+
+---
+
+# Category API Endpoints
+
+| Method | Endpoint | Description |
+|----------|----------------------------|----------------|
+| GET | /api/categories | List Categories |
+| GET | /api/categories/{id} | Show Category |
+| POST | /api/categories | Create Category |
+| PUT | /api/categories/{id} | Update Category |
+| DELETE | /api/categories/{id} | Delete Category |
+
+---
+
+# Features Implemented
+
+## Products
+
+- ✅ CRUD
+- ✅ Query Builder
+- ✅ Search
+- ✅ Filtering
+- ✅ Pagination
+- ✅ API Resources
+- ✅ Validation
+- ✅ Service Layer
+- ✅ Dependency Injection
+- ✅ Route Model Binding
+
+## Categories
+
+- 🚧 CRUD (In Progress)
+
+---
+
+# Concepts Learned
+
+- MVC Architecture
+- REST API Design
+- Eloquent ORM
+- Query Builder
+- Route Model Binding
+- Dependency Injection
+- Service Layer Pattern
+- API Resources
+- Form Requests
+- Resource Controllers
+- Pagination
+- Search
+- Filtering
+- Relationships (belongsTo)
+- Validation
+- Mass Assignment
+- JSON Responses
+
+---
+
+# Future Improvements
+
+- Authentication (Laravel Sanctum)
+- Authorization
+- Policies
+- Gates
+- Stock Management
+- Suppliers
+- Customers
+- Orders
+- Dashboard Statistics
+- Redis Cache
+- Queues & Jobs
+- Events & Listeners
+- Notifications
+- File Uploads
+- Unit Testing
+- Feature Testing
+- Docker
+- CI/CD
+- API Documentation (Swagger)
+
+---
+
+# Development Roadmap
+
+## Phase 1 ✅
+
+- [x] Laravel Setup
+- [x] PostgreSQL
+- [x] Product CRUD
+- [x] Services
+- [x] Resources
+- [x] Requests
+- [x] Pagination
+- [x] Query Builder
+- [x] Relationships
+
+## Phase 2 🚧
+
+- [ ] Category CRUD
+- [ ] Category Service
+- [ ] Category Resource
+- [ ] Category Requests
+
+## Phase 3
+
+- [ ] Authentication
+- [ ] Authorization
+
+## Phase 4
+
+- [ ] Inventory Module
+
+## Phase 5
+
+- [ ] Testing
+
+## Phase 6
+
+- [ ] Deployment
+
+---
+
+# Author
+
+Daniel Kabue Maina
+
+Software Developer
+
+Laravel | Angular | PostgreSQL | REST APIs
