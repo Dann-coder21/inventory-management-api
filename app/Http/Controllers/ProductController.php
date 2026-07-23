@@ -10,9 +10,26 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $products = Product::query()
+
+            // Load the related category
+            ->with('category')
+
+            // Filter by category if provided
+            ->when($request->filled('category'), function ($query) use ($request) {
+                $query->where('category_id', $request->category);
+            })
+
+            // Search by product name if provided
+            ->when($request->filled('search'), function ($query) use ($request) {
+                $query->where('name', 'LIKE', "%{$request->search}%");
+            })
+            ->latest()
+            ->paginate(10);
+
+        return response()->json($products);
     }
 
     /**
