@@ -47,9 +47,11 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(product $product)
+    public function show(Product $product)
     {
-        //
+
+        $product = $this->productService->show($product);
+        return new productResource($product);
     }
 
     /**

@@ -37,4 +37,10 @@ class ProductService
 
         return product::create($data);
     }
+
+    public function show(Product $product)
+    {
+
+        return $product->load('category');
+    }
 }
